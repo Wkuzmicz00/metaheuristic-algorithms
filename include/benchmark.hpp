@@ -1,8 +1,6 @@
 #ifndef BENCHMARK_HPP
 #define BENCHMARK_HPP
 
-#include <iostream>
-#include <numeric>
 #include <string>
 #include <map>
 
@@ -25,9 +23,6 @@ namespace benchmarkFunction
 	double Rosenbrock(const Eigen::VectorXd& x);
 	double Rastrigin(const Eigen::VectorXd& x);
 	double Sphere(const Eigen::VectorXd& x);
-	double Himmelbau(const Eigen::VectorXd& x);
-	double Bukin(const Eigen::VectorXd& x);
-	double Beale(const Eigen::VectorXd& x);
 }
 
 std::map<std::string, statistics> evaluateMetaheuristic(returnValues(*Metaheuristic)(double(*benchmarkFunction)(const Eigen::VectorXd& x), int N, int Tmax), int n, int D, int Tmax);

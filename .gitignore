@@ -1,6 +1,8 @@
 # Prerequisites
 *.d
 
+eigen-340/
+
 # Compiled Object files
 *.slo
 *.lo

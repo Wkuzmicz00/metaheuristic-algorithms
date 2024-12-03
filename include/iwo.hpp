@@ -16,9 +16,10 @@ struct Params {
 	double finalSigma;
 };
 
-returnValues iwo(Params params, int dimensions, VEC lowerBounds, VEC upperBounds, double (*fitnessFunction)(const VEC&));
-
-MAT GeneratePopulation(VEC L, VEC U, int N, int D);
-MAT sortByFitness(const MAT& m, double (*fitnessFunction)(const VEC&));
+namespace IWO{
+    returnValues algorithm(Params params, int dimensions, VEC lowerBounds, VEC upperBounds, double (*fitnessFunction)(const VEC&));
+    MAT generatePopulation(VEC L, VEC U, int N, int D);
+    MAT sortByFitness(const MAT& m, double (*fitnessFunction)(const VEC&));
+}
 
 #endif // IWO_HPP

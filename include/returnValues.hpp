@@ -4,7 +4,7 @@
 #include <iostream>
 #include <random>
 
-#include <C:\Users\wojte\source\repos/inz_ai/Eigen/Dense>
+#include "../eigen-3.4.0/Eigen/Dense"
 
 
 struct returnValues {

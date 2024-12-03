@@ -1,9 +1,8 @@
-#include "iwo.hpp"
-
+#include "../include/iwo.hpp"
 
 #include <cmath>
 
-returnValues iwo(Params params, int dimensions, VEC lowerBounds, VEC upperBounds, double (*fitnessFunction)(const VEC&)){
+returnValues IWO::algorithm(Params params, int dimensions, VEC lowerBounds, VEC upperBounds, double (*fitnessFunction)(const VEC&)){
 
 	std::random_device rd;
 	std::mt19937 gen(rd());
@@ -11,13 +10,15 @@ returnValues iwo(Params params, int dimensions, VEC lowerBounds, VEC upperBounds
 
 	int t = 0;
 
-	MAT population = GeneratePopulation(lowerBounds, upperBounds, params.populationSize, dimensions);
-
+	//Initial population
+	MAT population = generatePopulation(lowerBounds, upperBounds, params.populationSize, dimensions);
 	population = sortByFitness(population, fitnessFunction);
 
 	while (t < params.tMax)
 	{
+
 		int currentPopulationSize = population.rows();
+
 		//Reproduction
 		double bestF = fitnessFunction(population.row(0));
 		double worstF = fitnessFunction(population.row(currentPopulationSize - 1));
@@ -31,8 +32,8 @@ returnValues iwo(Params params, int dimensions, VEC lowerBounds, VEC upperBounds
 			double fitness = fitnessFunction(population.row(i));
 			Sp(i) = std::ceil(params.minSeeds + (fitness - worstF) * ((params.maxSeeds - params.minSeeds) / (bestF - worstF)));
 		}
-		
 
+		//Spatial distibution
 		double stdev = (std::pow(params.tMax - t, params.n) / std::pow(params.tMax, params.n)) * (params.initSigma - params.finalSigma) + params.finalSigma;
 
 		int sum = Sp.sum();
@@ -49,7 +50,7 @@ returnValues iwo(Params params, int dimensions, VEC lowerBounds, VEC upperBounds
 			}
 		}
 
-
+		//Competetive Elimination
 		newPopulation.conservativeResize(population.rows() + newPopulation.rows(), dimensions);
 		newPopulation.bottomRows(population.rows()) = population;
 
@@ -62,7 +63,7 @@ returnValues iwo(Params params, int dimensions, VEC lowerBounds, VEC upperBounds
 	return returnValues(fitnessFunction(population.row(0)), population.row(0));
 }
 
-MAT GeneratePopulation(VEC L, VEC U, int N, int D) {
+MAT IWO::generatePopulation(VEC L, VEC U, int N, int D) {
 	std::random_device rd;
 	std::mt19937 gen(rd());
 
@@ -73,12 +74,12 @@ MAT GeneratePopulation(VEC L, VEC U, int N, int D) {
 	for (size_t i = 0; i < D; i++)
 		for (size_t j = 0; j < N; j++)
 			population(j, i) = L(i) + dis(gen) * (U(i) - L(i));
-		
+
 
 	return population;
 }
 
-MAT sortByFitness(const MAT& m, double (*fitnessFunction)(const VEC&))
+MAT IWO::sortByFitness(const MAT& m, double (*fitnessFunction)(const VEC&))
 {
 	std::vector<std::pair<int, double>> fitnessValues;
 	fitnessValues.reserve(m.rows());
