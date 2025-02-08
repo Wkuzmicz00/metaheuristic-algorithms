@@ -1,7 +1,7 @@
 # Prerequisites
 *.d
-
-eigen-340/
+.vscode/
+build/
 
 # Compiled Object files
 *.slo
